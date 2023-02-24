@@ -1,15 +1,15 @@
 cmake_minimum_required(VERSION 3.2)
 
-project(JsonPacker)
+project(json_packer)
 
 include_directories("jsoncpp/include/")
 
-add_executable(JsonPacker
-	JsonPacker/main.cpp
-	JsonPacker/JsonPacker.cpp
-	JsonPacker/JsonPacker.h
-	JsonPacker/TLVConverter.h
-	JsonPacker/TLVConverter.cpp
+add_executable(jsonpacker
+	jsonpacker/main.cpp
+	jsonpacker/JsonPacker.cpp
+	jsonpacker/JsonPacker.h
+	jsonpacker/TLVConverter.h
+	jsonpacker/TLVConverter.cpp
 	jsoncpp/src/lib_json/json_internalarray.inl
 	jsoncpp/src/lib_json/json_internalmap.inl
 	jsoncpp/src/lib_json/json_reader.cpp
