@@ -67,7 +67,7 @@ std::string valueToString( double value )
 {
    char buffer[32];
 #if defined(_MSC_VER) && defined(__STDC_SECURE_LIB__) // Use secure version with visual studio 2005 to avoid warning. 
-   _sprintf_s_l(buffer, sizeof(buffer), "%#.16g", NativeLocale::GetInstace(), value); 
+   sprintf_s(buffer, sizeof(buffer), "%#.16g", value); 
 #else	
    sprintf(buffer, "%#.16g", value); 
 #endif
