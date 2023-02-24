@@ -1,5 +1,3 @@
-#include <atlbase.h>
-#include <atlconv.h>
 #include <iostream>
 #include <json/value.h>
 #include <json/writer.h>
@@ -1185,28 +1183,6 @@ Value::isMember( const char *key ) const
 {
    const Value *value = &((*this)[key]);
    return value != &null;
-}
-
-
-bool 
-Value::isMembers( LPCSTR first, ... ) const
-{
-	va_list list;
-	LPCSTR str;
-	
-	va_start (list, first);
-	str = va_arg(list, LPCSTR);
-	
-	while (str != NULL)
-	{
-		if (!isMember(str))
-			return false;
-		str = va_arg(list, LPCSTR);
-	}
-	
-	va_end (list);
-	
-	return true;
 }
 
 

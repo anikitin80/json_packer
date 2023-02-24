@@ -6,8 +6,8 @@ include_directories("jsoncpp/include/")
 
 add_executable(jsonpacker
 	jsonpacker/main.cpp
-	jsonpacker/JsonPacker.cpp
-	jsonpacker/JsonPacker.h
+	jsonpacker/jsonpacker.cpp
+	jsonpacker/jsonpacker.h
 	jsonpacker/TLVConverter.h
 	jsonpacker/TLVConverter.cpp
 	jsoncpp/src/lib_json/json_internalarray.inl

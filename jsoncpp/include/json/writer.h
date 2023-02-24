@@ -5,7 +5,6 @@
 # include <vector>
 # include <string>
 # include <iostream>
-# include <windows.h>
 
 
 namespace Json {
@@ -168,13 +167,6 @@ namespace Json {
    /// \brief Output using the StyledStreamWriter.
    /// \see Json::operator>>()
    std::ostream& operator<<( std::ostream&, const Value &root );
-
-   template <class T>
-   HRESULT JsonWrite(Value& dict, LPCSTR fieldName, const T& value)
-   {
-       dict[fieldName] = value;
-       return S_OK;
-   }
 } // namespace Json
 
 

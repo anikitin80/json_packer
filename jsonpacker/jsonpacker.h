@@ -19,7 +19,7 @@ public:
 protected:
 
     int DoProcessRecords();
-    __int16 GetDictionaryId(const char *key);    // get Id or create new entry in the dictionary
+    int16_t GetDictionaryId(const char *key);    // get Id or create new entry in the dictionary
     bool SerializeRecord(const Json::Value& record);
     void SerializeDictionary();
 
@@ -31,7 +31,7 @@ protected:
     std::ofstream OutStream;
 
     // dictionary
-    std::unordered_map<std::string, __int16> Dictionary;
-    __int16 CurrentDictId = 0;
+    std::unordered_map<std::string, int16_t> Dictionary;
+    int16_t CurrentDictId = 0;
 };
 

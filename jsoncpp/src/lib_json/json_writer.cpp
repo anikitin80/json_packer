@@ -6,7 +6,6 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
-#include "json_locale.h"
 
 #if _MSC_VER >= 1400 // VC++ 8.0
 #pragma warning( disable : 4996 )   // disable warning about strdup being deprecated.
@@ -70,7 +69,7 @@ std::string valueToString( double value )
 #if defined(_MSC_VER) && defined(__STDC_SECURE_LIB__) // Use secure version with visual studio 2005 to avoid warning. 
    _sprintf_s_l(buffer, sizeof(buffer), "%#.16g", NativeLocale::GetInstace(), value); 
 #else	
-   _sprintf_l(buffer, "%#.16g", NativeLocale::GetInstace(), value); 
+   sprintf(buffer, "%#.16g", value); 
 #endif
    char* ch = buffer + strlen(buffer) - 1;
    if (*ch != '0') return buffer; // nothing to truncate, so save time

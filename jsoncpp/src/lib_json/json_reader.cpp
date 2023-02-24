@@ -6,7 +6,6 @@
 #include <cstring>
 #include <iostream>
 #include <stdexcept>
-#include "json_locale.h"
 
 #if _MSC_VER >= 1400 // VC++ 8.0
 #pragma warning( disable : 4996 )   // disable warning about strdup being deprecated.
@@ -630,7 +629,7 @@ Reader::decodeDouble( Token &token )
    //struct lconv * pconv = localeconv();
 
    char* stopChar = const_cast<char*>(token.end_);
-   value = _strtod_l(token.start_, &stopChar, NativeLocale::GetInstace());
+   value = strtod(token.start_, &stopChar);
 
    //if ( count != 1 )
    //   return addError( "'" + std::string( token.start_, token.end_ ) + "' is not a number.", token );

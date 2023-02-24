@@ -111,7 +111,7 @@ int CJsonPacker::DoProcessRecords()
     return nProcessed;
 }
 
-__int16 CJsonPacker::GetDictionaryId(const char* key)
+int16_t CJsonPacker::GetDictionaryId(const char* key)
 {
     auto iterDict = Dictionary.find(key);
     if (iterDict != Dictionary.end())

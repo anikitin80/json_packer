@@ -340,10 +340,7 @@ namespace Json {
 
       /// Return true if the object has a member named key.
       bool isMember( const char *key ) const;
-	  /// Return true if objects have a member named keys.
-	  /// The last parameter must be NULL
-	  bool isMembers( const char *first, ... ) const;
-      /// Return true if the object has a member named key.
+	   /// Return true if the object has a member named key.
       bool isMember( const std::string &key ) const;
 # ifdef JSON_USE_CPPTL
       /// Return true if the object has a member named key.

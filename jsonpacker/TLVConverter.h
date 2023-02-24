@@ -23,20 +23,20 @@ namespace TLV
         DictionaryStart = 12,  // specific tag which marks start of dictionary section
     };
 
-    void WriteTag(ostream& os, __int8 tag);           // tag only - zero length data
+    void WriteTag(ostream& os, int8_t tag);           // tag only - zero length data
     void WriteString(ostream& os, string str);        // string serialization
     void WriteJson(ostream& os, Json::Value value);   // Json::Value serialization
 
     // serialization of common types: int, double, bool
     template<typename ValType>
-    void Write(ostream& str, __int8 tag, ValType value)
+    void Write(ostream& str, int8_t tag, ValType value)
     {
         // write tag part
         str.write(reinterpret_cast<char*>(&tag), 1);
 
         // length part
-        __int8 len = sizeof(ValType);
-        str.write(reinterpret_cast<char*>(&len), sizeof(__int8));
+        int8_t len = sizeof(ValType);
+        str.write(reinterpret_cast<char*>(&len), sizeof(int8_t));
 
         //value part
         str.write(reinterpret_cast<char*>(&value), len);
