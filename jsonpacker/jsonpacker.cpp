@@ -127,8 +127,9 @@ bool CJsonPacker::SerializeRecord(const Json::Value& record)
     // where DictId - is id of the attribute from the dictionary
     for (auto iter = record.begin(); iter != record.end(); iter++)
     {
-        TLV::Write(OutStream, TLV::Identity, GetDictionaryId(iter.memberName()));
-        TLV::WriteJson(OutStream, record.get(iter.memberName(), ""));
+        auto attrName = iter.name();
+        TLV::Write(OutStream, TLV::Identity, GetDictionaryId(attrName.c_str()));
+        TLV::WriteJson(OutStream, record.get(attrName, ""));
     }
 
     TLV::WriteTag(OutStream, TLV::RecordEnd);
