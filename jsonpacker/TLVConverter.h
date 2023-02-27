@@ -32,23 +32,44 @@ namespace TLV
     
     // string serialization
     bool WriteString(ostream& os, string str);
-    bool ReadString(istream& os, string& str);
+    bool ReadString(istream& os, string& str, bool bReadTagPart = true);
     
     // Json::Value serialization
-    void WriteJson(ostream& os, Json::Value value);
+    bool WriteJson(ostream& os, Json::Value value);
+    bool ReadJson(istream& os, Json::Value& value);
 
     // serialization of common types: int, double, bool
     template<typename ValType>
-    void Write(ostream& str, int8_t tag, ValType value)
+    bool Write(ostream& os, int8_t tag, ValType value)
     {
         // write tag part
-        str.write(reinterpret_cast<char*>(&tag), 1);
+        os.write(reinterpret_cast<char*>(&tag), 1);
 
         // length part
         int8_t len = sizeof(ValType);
-        str.write(reinterpret_cast<char*>(&len), sizeof(int8_t));
+        os.write(reinterpret_cast<char*>(&len), sizeof(int8_t));
 
         //value part
-        str.write(reinterpret_cast<char*>(&value), len);
+        os.write(reinterpret_cast<char*>(&value), len);
+        return true;
+    }
+
+    template<typename ValType>
+    bool ReadValue(istream& os, ValType& value)
+    {
+        // length part
+        int8_t len = 0;
+        os.read(reinterpret_cast<char*>(&len), sizeof(int8_t));
+
+        if(sizeof(ValType) != len)
+        {
+            std::cout << "ReadValue: incorrect value type";
+            return false;
+        }
+
+        //value part
+        os.read(reinterpret_cast<char*>(&value), len);
+        return true;
     }
 };
+
