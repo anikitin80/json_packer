@@ -4,4 +4,7 @@ project(json_packer)
 
 add_subdirectory (jsoncpp)
 add_subdirectory (jsonpacker)
+add_subdirectory (test)
+
+enable_testing()
 	

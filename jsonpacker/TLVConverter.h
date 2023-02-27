@@ -21,11 +21,21 @@ namespace TLV
         Identity        = 10,  // 16-bit integer for dictionary id
         RecordEnd       = 11,  // specific tag for records separation
         DictionaryStart = 12,  // specific tag which marks start of dictionary section
+
+        FirstTagType = 1,
+        LastTagType = DictionaryStart
     };
 
-    void WriteTag(ostream& os, int8_t tag);           // tag only - zero length data
-    void WriteString(ostream& os, string str);        // string serialization
-    void WriteJson(ostream& os, Json::Value value);   // Json::Value serialization
+    // tag only - zero length data
+    bool WriteTag(ostream& os, int8_t tag);
+    bool ReadTag(istream& os, int8_t& tag);
+    
+    // string serialization
+    bool WriteString(ostream& os, string str);
+    bool ReadString(istream& os, string& str);
+    
+    // Json::Value serialization
+    void WriteJson(ostream& os, Json::Value value);
 
     // serialization of common types: int, double, bool
     template<typename ValType>

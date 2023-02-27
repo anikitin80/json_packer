@@ -2,18 +2,48 @@
 #include <iostream>
 
 // tag only - zero length data
-void TLV::WriteTag(ostream& os, int8_t tag)
+bool TLV::WriteTag(ostream& os, int8_t tag)
 {
+    if(0 == tag)
+    {
+        cout << "0 is incorrect tag value" << endl;
+        return false;
+    }
+
     // write tag part
     os.write(reinterpret_cast<char*>(&tag), 1);
 
     // length part
     int8_t len = 0;
     os.write(reinterpret_cast<char*>(&len), sizeof(int8_t));
+
+    return true;
+}
+
+bool TLV::ReadTag(istream& os, int8_t& tag)
+{
+    // read tag part
+    os.read(reinterpret_cast<char*>(&tag), 1);
+    if(0 == tag)
+    {
+        cout << "0 is incorrect tag value" << endl;
+        return false;
+    }
+
+    // length part
+    int8_t len = 0;
+    os.read(reinterpret_cast<char*>(&len), sizeof(int8_t));
+    if(0 != len)
+    {
+        cout << "length should be 0, otherwise another method (not ReadTag) should be used" << endl;
+        return false;
+    }
+
+    return true;
 }
 
 // specific case - string serialization
-void TLV::WriteString(ostream& os, string str)
+bool TLV::WriteString(ostream& os, string str)
 {
     // write tag part
     int8_t type = Json::stringValue;
@@ -31,6 +61,32 @@ void TLV::WriteString(ostream& os, string str)
 
     // write data part
     os.write(str.c_str(), str.size());
+    return true;
+}
+
+bool TLV::ReadString(istream& os, string& str)
+{
+    // write tag part
+    int8_t type = 0;
+    os.read(reinterpret_cast<char*>(&type), 1);
+    if(type != Json::stringValue)
+    {
+        cout << "wrong tag value: Json::stringValue expected" << endl;
+        return false;
+    }
+
+    uint8_t len = 0;
+    uint16_t len16 = 0;
+    // first byte of length
+    os.read(reinterpret_cast<char*>(&len), sizeof(int8_t));
+    if(len == 0xFF) // if first byte contains 0xFF - read next two bytes to get length
+        os.read(reinterpret_cast<char*>(&len16), sizeof(int16_t));
+
+    // allocate memory and read
+    str.resize(len == 0xFF? len16 : len);
+    os.read(&str[0], len == 0xFF? len16 : len);
+
+    return true;
 }
 
 void TLV::WriteJson(ostream& str, Json::Value value)
