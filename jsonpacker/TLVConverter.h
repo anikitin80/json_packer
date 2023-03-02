@@ -21,24 +21,55 @@ namespace TLV
         Identity        = 10,  // 16-bit integer for dictionary id
         RecordEnd       = 11,  // specific tag for records separation
         DictionaryStart = 12,  // specific tag which marks start of dictionary section
+
+        FirstTagType = 1,
+        LastTagType = DictionaryStart
     };
 
-    void WriteTag(ostream& os, int8_t tag);           // tag only - zero length data
-    void WriteString(ostream& os, string str);        // string serialization
-    void WriteJson(ostream& os, Json::Value value);   // Json::Value serialization
+    // tag only - zero length data
+    bool WriteTag(ostream& os, int8_t tag);
+    bool ReadTag(istream& os, int8_t& tag);
+    
+    // string serialization
+    bool WriteString(ostream& os, string str);
+    bool ReadString(istream& os, string& str, bool bReadTagPart = true);
+    
+    // Json::Value serialization
+    bool WriteJson(ostream& os, Json::Value value);
+    bool ReadJson(istream& os, Json::Value& value);
 
     // serialization of common types: int, double, bool
     template<typename ValType>
-    void Write(ostream& str, int8_t tag, ValType value)
+    bool Write(ostream& os, int8_t tag, ValType value)
     {
         // write tag part
-        str.write(reinterpret_cast<char*>(&tag), 1);
+        os.write(reinterpret_cast<char*>(&tag), 1);
 
         // length part
         int8_t len = sizeof(ValType);
-        str.write(reinterpret_cast<char*>(&len), sizeof(int8_t));
+        os.write(reinterpret_cast<char*>(&len), sizeof(int8_t));
 
         //value part
-        str.write(reinterpret_cast<char*>(&value), len);
+        os.write(reinterpret_cast<char*>(&value), len);
+        return true;
+    }
+
+    template<typename ValType>
+    bool ReadValue(istream& os, ValType& value)
+    {
+        // length part
+        int8_t len = 0;
+        os.read(reinterpret_cast<char*>(&len), sizeof(int8_t));
+
+        if(sizeof(ValType) != len)
+        {
+            std::cout << "ReadValue: incorrect value type";
+            return false;
+        }
+
+        //value part
+        os.read(reinterpret_cast<char*>(&value), len);
+        return true;
     }
 };
+
