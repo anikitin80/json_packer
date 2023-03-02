@@ -5,7 +5,7 @@
 
 const string fileName = "test.bin"; // file for serialization tests
 
-TEST(jsonpackage, TLVConverter_ReadWriteTag) 
+TEST(TLVConverter, ReadWriteTag) 
 {
     ofstream os(fileName, ios::trunc|ios::binary);
     std::vector<int8_t> tagsList;
@@ -28,7 +28,7 @@ TEST(jsonpackage, TLVConverter_ReadWriteTag)
     remove(fileName.c_str());
 }
 
-TEST(jsonpackage, TLVConverter_ReadWriteString) 
+TEST(TLVConverter, ReadWriteString) 
 {
     std::vector<std::string> stringsList = { "", "test", "test test test", "!@#$%^&*()_+=-",
         "very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string very long string"
@@ -52,7 +52,7 @@ TEST(jsonpackage, TLVConverter_ReadWriteString)
     remove(fileName.c_str());
 }
 
-TEST(jsonpackage, TLVConverter_ReadWriteJson) 
+TEST(TLVConverter, ReadWriteJson) 
 {
     std::vector<Json::Value> values = { Json::Value(0), Json::Value(1), Json::Value(-1), Json::Value(true), Json::Value(false),
         Json::Value(10.2), Json::Value(-15.3), Json::Value(3453453.0), Json::Value(0xAFAFAFAF)};
